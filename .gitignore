@@ -1,0 +1,14 @@
+# MATLAB temporary files and local configuration
+*.asv
+*.m~
+slprj/
+*.mex*
+# Local verification logs
+*.log
+# Operating-system files
+.DS_Store
+Thumbs.db
+# Do not commit third-party toolboxes or local credentials
+YALMIP/
+.env
+.env.*

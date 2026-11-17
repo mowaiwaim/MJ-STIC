@@ -1,0 +1,97 @@
+Shang--Zhang two-observation controller for Example 3
+======================================================
+
+Run run_shang_comparison in MATLAB R2024a with bw_parameters.m, bw_paths.m
+and simulate_bounded_wait.m from the numerical supplement on the path.
+Default run_shang_comparison applies the manuscript's H2=0.45 communication
+constraint. The optional run_shang_comparison(false) independently calibrates
+and evaluates the untruncated rule; its files are in uncapped/.
+All generated tables are written to outputs under this script's folder.
+
+Source
+------
+B. Shang and J.-E. Zhang (2025), Stability of nonlinear stochastic systems
+with delayed impulses under self-triggered impulsive control, AIMS Mathematics
+10, 20368--20384. DOI 10.3934/math.2025910.
+https://www.aimspress.com/aimspress-data/math/2025/9/PDF/math-10-09-910.pdf
+Equations (18) and (26) prescribe a state-dependent observation time followed
+by a second wait computed using both observations. Equation (26) and its
+preceding text specify pi(x)=0.15+0.10 exp(-100||x||), theta=2 and
+breve_ell=0.01; the published example uses ell=0.5 and its own quadratic
+matrix D. We retain pi, theta and breve_ell and use Q=e' M e from Example 3
+in both observations. The sole tuned coefficient is ell. At reference s
+(entry to mode 2 or immediately after a pulse), store Q_s. At u=s+pi(e(s))
+read Q_u. The deadline from (18) is
+
+    t_next = u + max(0,(ell + log(Q_s/Q_u))/(2+0.01)).
+
+For the bounded implementation replace this deadline by min(t_next,s+0.45).
+This is imposed by the comparison network. It is an adaptation of (18).
+The intermediate observation always occurs before the cap unless a switch
+cancels the plan. Neither a probe nor choosing a deadline resets the
+certificate clock; only executed pulses or mode changes reset it.
+
+The positive part implements the infimum over t>u in (18), so a nonpositive
+second wait gives a pulse at u. If that occurs, the measurement at u is
+reused for the new reference after applying the known reset. The table
+records such coincidences. Every pulse multiplies all three errors by 0.5.
+A switch to mode 1 cancels a pending intermediate observation or pulse;
+a new visit to mode 2 starts a fresh reference. Ties prioritize switching.
+Only mode 2 uses this scheduler, and mode 1 retains the original pinning law.
+
+Admissibility and interpretation
+--------------------------------
+The intermediate observation wait is strictly greater than 0.15 for finite
+input (numerically at least 0.15) and at most 0.25. This is a lower bound
+on the time from one reference to an executed pulse in the same visit.
+The original rule has no finite upper bound on the whole wait: when Q_u
+is positive and very small compared with Q_s, the logarithmic term grows.
+The bounded adaptation keeps every pending age at most 0.45.
+The mean-square clock-certificate argument for this network extends to this
+implementation because each deadline is adapted, actual pulses retain the
+same all-node jump and scalar contraction, ages lie in [0,0.45], Markov
+switches retain their cancel/restart precedence, and the storage is
+continuous at probes. The plant and certificate matrices are unchanged.
+The resulting bound uses the Example 3 certificate, not the theorem from
+Shang and Zhang. The uncapped adaptation has no such verification.
+Intermediate observations introduce no generator/jump term.
+Mode switches can cancel a previously scheduled action. Both energies are
+tested for strict positivity at every actual intermediate observation.
+
+In the original stochastic system (1) the drift has no delayed state, and
+the delay is in the jump. One sufficient condition in Assumption 1 is
+E[L V]<=theta E[V]. For the numerical adaptation the actual reset yields
+Q_plus/Q_minus=0.25. The design search uses 0.501<=ell<=1.35, satisfying
+2*0.25<ell and ell+2*0.01*0.25<log(4) for every value. These reproduce the
+scalar waiting and contraction restrictions for (18) with the
+jump-delay weight set to zero and a current-state multiplier 0.25. The original continuous-flow and switching
+assumptions have not been proved for Example 3, whose drift contains a delay
+and whose modes cancel and restart the scheduler. No convergence theorem or rate
+from the source paper is asserted for either adaptation.
+
+Experimental protocol
+---------------------
+All coefficients, delay, noises, initial histories and event-aligned
+Euler--Maruyama stepping are taken unchanged from Example 3. Both controllers
+reuse the same entering/executed event state to initialize the clock. A full
+error snapshot is counted for each reference and each successfully reached
+intermediate observation; any same-instant reuse is counted once. Cancelled
+observations scheduled in the future do not cost a snapshot. Probe and pulse
+cancellations are reported separately. Actuation counts are three times
+the count of executed pulses. A snapshot denotes acquisition of all three
+errors. The base step is 0.005 on [0,8] (1601 grid samples).
+
+The 256 independent pilot paths (seed 512091, mode seed 512092) supply the
+actual MJ-STIC pulse target. The bracket endpoints and 12 bisection steps
+are tested solely by average pulse count; the observed nearest count wins,
+with the first candidate selected in case of ties. Ell is frozen before
+opening the 384 test paths (seed 73129, mode seed 73130). The pilot table
+records every tried value and the winning row. The other tables retain all
+test-path outcomes, the mean error curve on the original time grid and the
+summary. Neither pilot errors nor test statistics are used in selection.
+
+
+The bounded summary reports both cap shares (among completed two-sample
+plans, including later cancellations, or among executions alone), and extrema
+of planned and executed waiting times on the test set. For an entry canceled
+before the probe no full two-sample deadline has yet been computed.

@@ -1,0 +1,2 @@
+mean_TerminalSquaredError,mean_IntegralSquaredError,mean_Impulses,mean_NodeCorrections,mean_FullErrorSnapshots,mean_References,mean_ProbeSamples,mean_CanceledTimers,mean_UsedCap,Gamma,Delta,Lambda,Lambda0,LowerWait,UpperWait,UncappedFraction
+2.23207527728664e-09,0.266203222624691,15.75,47.25,33.0755208333333,17.6901041666667,15.3854166666667,1.0234375,6.34895833333333,0.730517578125,0.1,2,0.01,0.339979080222061,0.45,0.633548774988727

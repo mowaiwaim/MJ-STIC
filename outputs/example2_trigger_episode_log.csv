@@ -1,0 +1,12 @@
+EpisodeID,theta,Ptheta,hat_t,zeta,compare_hat_vs_zeta,action,theta_source,theta_next_actual,theta_update_rule,mode_at_theta,Ptheta_eps
+1,0,1.421599,0.023,0.204,hat_t < zeta,"actual impulse at hat_t",initial_in_I,0.023,theta := hat_t after impulse,2,1e-10
+2,0.023,0.833222880317985,0.055,0.204,hat_t < zeta,"actual impulse at hat_t",post_impulse,0.055,theta := hat_t after impulse,2,1e-10
+3,0.055,0.479388130238142,0.099,0.204,hat_t < zeta,"actual impulse at hat_t",post_impulse,0.099,theta := hat_t after impulse,2,1e-10
+4,0.099,0.264077239300011,0.157,0.204,hat_t < zeta,"actual impulse at hat_t",post_impulse,0.157,theta := hat_t after impulse,2,1e-10
+5,0.157,0.135056739200952,0.233,0.204,hat_t >= zeta,"discard candidate, suspend at zeta",post_impulse,0.48,theta := next entry into I,2,1e-10
+6,0.48,0.0142292427325699,0.624,0.542,hat_t >= zeta,"discard candidate, suspend at zeta",enter_I,0.575,theta := next entry into I,2,1e-10
+7,0.575,0.00572736850224025,0.749,0.581,hat_t >= zeta,"discard candidate, suspend at zeta",enter_I,1.111,theta := next entry into I,2,1e-10
+8,1.111,0.000853692043031045,1.347,1.443,hat_t < zeta,"actual impulse at hat_t",enter_I,1.347,theta := hat_t after impulse,2,1e-10
+9,1.347,0.000289487443657744,1.619,1.443,hat_t >= zeta,"discard candidate, suspend at zeta",post_impulse,2.462,theta := next entry into I,2,1e-10
+10,2.462,1.90434469491235e-08,Inf,2.686,hat_t = Inf >= zeta,"discard candidate, suspend at zeta",enter_I,2.922,theta := next entry into I,2,1e-10
+11,2.922,1.31879242900636e-09,Inf,2.956,hat_t = Inf >= zeta,"discard candidate, suspend at zeta",enter_I,NaN,theta := next entry into I,2,1e-10
