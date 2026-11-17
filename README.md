@@ -1,6 +1,6 @@
 # MJ-STIC: MATLAB code and data
 
-Code and simulation data for **Mean-Square Passivity and Synchronization of Markovian Jump Multi-Weighted Coupled Neural Networks via Hybrid Control**, by Zi'an Wang and Yu Zhang.
+Code and simulation data for **Hybrid Control for Mean-Square Passivity and Synchronization of Multi-Weighted Coupled Neural Networks under Communication Switching**, by Zi'an Wang and Yu Zhang.
 
 ## Run the examples
 
